@@ -23,7 +23,7 @@
 ---
 
 <a name="farsi-section"></a>
-[دریافت api برای هوشمصنوعی](https://gapgpt.app/platform/tokens)
+
 ## 🌟 CMDX ترمینال - راهنمای فارسی
 
 CMDX یک شبیه‌ساز مدرن ترمینال ویندوز با قابلیت‌های پیشرفته و رابط کاربری بهبود یافته است. این پروژه با ترکیب قدرت پایتون، جاوااسکریپت و هوش مصنوعی، تجربه‌ای مشابه Command Prompt ویندوز را با امکانات اضافه ارائه می‌دهد.
@@ -80,9 +80,9 @@ python cmdx.py
 3. یک Pull Request ارسال کنید
 
 ---
-
+[دریافت api برای هوش مصنوعی](https://gapgpt.app/platform/tokens)
 <a name="english-section"></a>
-[get AI api](https://gapgpt.app/platform/tokens)
+
 
 ## 🌟 CMDX Terminal - English Guide
 
@@ -158,36 +158,4 @@ Your contributions help this project grow! To contribute:
 </div>
 
 
-## Key Features of this README
-
-1. **Professional Bilingual Format**:
-   - Clean separation between Farsi and English sections
-   - Navigation links at the top
-   - Consistent structure for both languages
-
-2. **Modern Visual Elements**:
-   - Badges for Python version, Flask, license, and version
-   - Technology stack table
-   - Placeholder screenshots (replace with actual images)
-
-3. **Complete Project Documentation**:
-   - Clear installation instructions
-   - Contribution guidelines
-   - License information
-   - Contact details
-
-4. **GitHub Optimized Formatting**:
-   - Proper Markdown syntax
-   - Responsive design
-   - Section anchors for easy navigation
-
-5. **Visual Hierarchy**:
-   - Clear section headers
-   - Consistent icon usage
-   - Balanced whitespace
-
-To use this README:
-1. Replace placeholder URLs with actual screenshots
-2. Update "yourusername" with your GitHub username
-3. Add your actual contact information
-4. Place in your project root as README.md
+[get AI api](https://gapgpt.app/platform/tokens)
