@@ -17,6 +17,7 @@
     <img src="https://img.shields.io/badge/Python-3.8%2B-blue?logo=python">
     <img src="https://img.shields.io/badge/Flask-2.0%2B-lightgrey?logo=flask">
     <img src="https://img.shields.io/badge/version-1.0.0-brightgreen">
+[![DOI](https://zenodo.org/badge/1036494162.svg)](https://doi.org/10.5281/zenodo.16811094)
   </div>
 </div>
 
