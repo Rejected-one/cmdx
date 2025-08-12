@@ -1,4 +1,4 @@
-# CMDX Terminal - Professional GitHub README
+# CMDX Terminal
 
 
 <div align="center">
