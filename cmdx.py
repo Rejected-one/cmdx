@@ -229,7 +229,7 @@ def learn():
     print("[[[]]]", command.replace("Learn\\",""))
     client = OpenAI(
         base_url="https://api.gapgpt.app/v1",
-        api_key="sk-NGd9H2XzGXR1dyP7yqjr7j9Jd2c4KmgwCCopeTWwenRXhGWK",
+        api_key="YOUR_API_KEY",
     )
 
     try:
@@ -297,4 +297,4 @@ with open("p:\\.program\\cmdx\\data.json", encoding="utf-8") as f:
     CMD_DATABASE = json.load(f)["cmd_commands"]
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run()

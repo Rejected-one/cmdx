@@ -290,10 +290,10 @@ $(document).ready(function () {
 
             }
         };
-        if ((String(suggestions[0].command) !== String(inputTextorg.split(" ")[0])) && element.style.color !== "red") {
+        if (((String(suggestions[0].command) !== String(inputTextorg.split(" ")[0])) && element.style.color !== "red")) {
             element.style.color = "rgb(244, 85, 0)";
         };
-        console.log((String(suggestions[0].command) , String(inputTextorg.split(" ")[0])))
+        console.log((String(suggestions[0].command), String(inputTextorg.split(" ")[0])))
         currentSuggestions = suggestions;
         $suggestionsBox.empty();
         selectedIndex = -1;
