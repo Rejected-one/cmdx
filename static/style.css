@@ -1,0 +1,430 @@
+/* === Reset و تنظیمات پایه === */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #1a1a1a; /* پس‌زمینه تیره کلاسیک */
+    color: #d0d0d0; /* رنگ متن خاکستری روشن */
+    min-height: 100vh;
+    cursor: default;
+    overflow-x: hidden;
+    padding: 20px 0;
+}
+
+/* === عنوان اصلی (ساده و کلاسیک) === */
+.neon-cmdx {
+    font-family: 'Courier New', monospace;
+    font-size: 4rem;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 6px;
+    color: #4aed4a; /* رنگ سبز کلاسیک ترمینال */
+    margin-bottom: 30px;
+    text-shadow: 0 0 10px rgba(74, 237, 74, 0.3); /* سایه نئون خیلی ملایم */
+}
+
+/* === کانتینر اصلی === */
+.container {
+    display: flex;
+    gap: 20px;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* === بخش فایل اکسپلورر === */
+.File_Explorer {
+    width: 25rem;
+    height: 45rem;
+    background-color: #121212; /* پس‌زمینه تیره‌تر */
+    border-radius: 10px; /* گوشه‌های کمی گرد */
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); /* سایه کلاسیک */
+    border: 1px solid #333;
+}
+
+.paraghrap {
+    color: #4aed4a;
+    padding: 15px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border-bottom: 1px solid #333;
+    background-color: rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+/* === دکمه‌های جلو/عقب === */
+.forward-Back {
+    display: flex;
+    justify-content: flex-end;
+    padding: 10px;
+    gap: 10px;
+}
+
+.forward-Back button {
+    color: #d0d0d0;
+    background-color: #2a2a2a;
+    padding: 8px 16px;
+    border: 1px solid #444;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    border-radius: 4px; /* گوشه‌های کمی گرد */
+    font-size: 0.9rem;
+}
+
+.forward-Back button:hover {
+    background-color: #3a3a3a;
+}
+
+/* === ساختار درایوها و فولدرها === */
+.drives-and-folders {
+    display: flex;
+    flex-direction: column;
+    height: calc(100% - 100px);
+    overflow: hidden;
+}
+
+.drives {
+    width: 100%;
+    padding: 10px;
+    background-color: #121212;
+    flex-shrink: 0;
+}
+
+.folders-container {
+    overflow-y: auto;
+    flex-grow: 1;
+    padding: 0 10px;
+    scrollbar-width: thin;
+    scrollbar-color: #444 #1e1e1e;
+}
+
+.folders-container::-webkit-scrollbar {
+    width: 8px;
+}
+
+.folders-container::-webkit-scrollbar-track {
+    background: #1e1e1e;
+}
+
+.folders-container::-webkit-scrollbar-thumb {
+    background-color: #444;
+    border-radius: 4px;
+}
+
+.folders-container::-webkit-scrollbar-thumb:hover {
+    background-color: #555;
+}
+
+/* === دکمه‌های درایو و فولدر === */
+.drive,
+.folders button {
+    width: 100%;
+    padding: 12px 15px;
+    margin: 5px 0;
+    border: none;
+    border-radius: 4px;
+    text-align: left;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    background-color: rgba(255, 255, 255, 0.05);
+    color: #d0d0d0;
+    display: flex;
+    align-items: center;
+    font-size: 0.95rem;
+}
+
+.drive:hover,
+.folders button:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* === Tooltip === */
+.tooltip {
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.85);
+    color: #d0d0d0;
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-size: 14px;
+    white-space: nowrap;
+    pointer-events: none;
+    z-index: 1000;
+    border: 1px solid #444;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    display: none;
+    transform: translate(15px, 15px);
+    max-width: 300px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+/* === استایل CMD === */
+.cmdx {
+    width: 72rem;
+    height: 41rem;
+    background-color: #0a0a0a; /* پس‌زمینه خیلی تیره */
+    border: 1px solid #333;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+}
+
+.terminal-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.terminal-output {
+    flex: 1;
+    padding: 15px;
+    overflow-y: auto;
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 14px;
+    color: #CCCCCC;
+    background-color: #0a0a0a;
+}
+
+.command-line {
+    display: flex;
+    align-items: baseline;
+    margin: 0;
+    padding: 2px 0;
+    line-height: 1.4;
+    font-family: 'Consolas', 'Courier New', monospace;
+}
+
+.prompt {
+    color: #4aed4a;
+    margin-right: 5px;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.command {
+    color: #FFFFFF;
+    white-space: pre-wrap;
+    word-break: break-all;
+}
+
+.command-output {
+    color: #CCCCCC;
+    white-space: pre-wrap;
+    word-break: break-all;
+    margin-left: 0;
+    display: block;
+}
+
+.command-input {
+    padding: 10px 15px;
+    background-color: #151515;
+    border-top: 1px solid #333;
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.input-text {
+    flex: 1;
+    background: transparent;
+    border: none;
+    color: #fff;
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 14px;
+    outline: none;
+    caret-color: #4aed4a;
+}
+
+.command-entry {
+    margin-bottom: 8px;
+}
+
+/* === سیستم پیشنهادات === */
+.suggestions-box {
+    position: absolute;
+    left: 0;
+    bottom: 100%;
+    z-index: 99999;
+    display: none;
+    min-width: 250px;
+    max-width: 100%;
+    max-height: 250px;
+    padding: 5px 0;
+    background: #181818;
+    border-radius: 6px 6px 0 0;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+    border: 1px solid #333;
+    border-bottom: none;
+    overflow-y: auto;
+}
+
+.suggestion-item {
+    padding: 10px 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    cursor: pointer;
+    transition: background-color 0.15s;
+    border-bottom: 1px solid #252525;
+    gap: 2px;
+}
+
+.suggestion-item:last-child {
+    border-bottom: none;
+}
+
+.suggestion-item:hover,
+.suggestion-item.highlighted {
+    background-color: #252525;
+}
+
+.suggestion-item .cmd {
+    color: #4aed4a;
+    font-weight: bold;
+    font-size: 1em;
+    margin-bottom: 2px;
+}
+
+.suggestion-item .desc {
+    color: #aaa;
+    font-size: 0.9em;
+    margin-left: 0;
+    margin-bottom: 2px;
+}
+
+.suggestion-item .params {
+    color: #d0d040; /* زرد خاکستری */
+    font-size: 0.85em;
+    margin-left: 0;
+    margin-top: 3px;
+}
+
+.suggestion-item .examples {
+    color: #40a0d0; /* آبی خاکستری */
+    font-size: 0.85em;
+    margin-left: 0;
+    margin-top: 3px;
+}
+
+.suggestion-item .params span,
+.suggestion-item .examples span {
+    display: block;
+    margin-bottom: 2px;
+    padding-left: 10px;
+}
+
+/* اسکرول‌بار سفارشی برای پیشنهادات */
+.suggestions-box::-webkit-scrollbar {
+    width: 8px;
+}
+
+.suggestions-box::-webkit-scrollbar-track {
+    background: #1e1e1e;
+    border-radius: 4px;
+}
+
+.suggestions-box::-webkit-scrollbar-thumb {
+    background-color: #444;
+    border-radius: 4px;
+    border: 1px solid #1e1e1e;
+}
+
+.suggestions-box::-webkit-scrollbar-thumb:hover {
+    background-color: #555;
+}
+
+.suggestions-box {
+    scrollbar-width: thin;
+    scrollbar-color: #444 #1e1e1e;
+}
+
+/* === دکمه‌های عملیاتی === */
+.copy-btn {
+    margin-right: 8px;
+    padding: 2px 10px;
+    font-size: 0.9em;
+    background: #333;
+    color: #d0d0d0;
+    border: 1px solid #444;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.copy-btn:hover {
+    background: #444;
+    color: #fff;
+}
+
+#clear-console {
+    background-color: #333;
+    color: #d0d0d0;
+    border: 1px solid #444;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-family: inherit;
+    padding: 10px 0;
+    margin: 12px 15px 0;
+    width: calc(100% - 30px);
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+#clear-console:hover {
+    background-color: #444;
+    color: #fff;
+}
+
+/* === حالت‌های مختلف دستورات === */
+.command-success { color: #4aed4a; }
+.command-error { color: #ed4a4a; }
+.command-warning { color: #d0d040; }
+
+/* === رسپانسیو === */
+@media (max-width: 1200px) {
+    .container {
+        flex-direction: column;
+        align-items: center;
+    }
+    .File_Explorer,
+    .cmdx {
+        width: 100%;
+        max-width: 95%;
+        margin: 10px 0;
+        height: auto;
+        min-height: 400px;
+    }
+    .neon-cmdx {
+        font-size: 3rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .neon-cmdx {
+        font-size: 2.2rem;
+        letter-spacing: 3px;
+    }
+    .command-line {
+        flex-wrap: wrap;
+    }
+    .prompt {
+        margin-bottom: 5px;
+    }
+    .File_Explorer,
+    .cmdx {
+        border-radius: 8px;
+    }
+}

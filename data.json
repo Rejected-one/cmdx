@@ -1,0 +1,400 @@
+{
+  "cmd_commands": [
+    {
+      "command": "cd",
+      "description": "تغییر دایرکتوری جاری",
+      "parameters": [
+        {
+          "name": "مسیر",
+          "value": "مطلق/نسبی",
+          "description": "مسیر پوشه مقصد (مثال: C:\\Windows)"
+        }
+      ],
+      "examples": [
+        "cd Documents",
+        "cd ..",
+        "cd \"C:\\Program Files\""
+      ]
+    },
+    {
+      "command": "dir",
+      "description": "نمایش محتوای دایرکتوری",
+      "parameters": [
+        {
+          "name": "/s",
+          "value": "بدون مقدار",
+          "description": "نمایش فایل‌ها از زیرپوشه‌ها"
+        },
+        {
+          "name": "/b",
+          "value": "بدون مقدار",
+          "description": "نمایش ساده (فقط نام فایل‌ها)"
+        }
+      ],
+      "examples": [
+        "dir",
+        "dir /s *.txt",
+        "dir /b > files.txt"
+      ]
+    },
+    {
+      "command": "copy",
+      "description": "کپی فایل‌ها",
+      "parameters": [
+        {
+          "name": "منبع",
+          "value": "مسیر فایل",
+          "description": "مسیر فایل مبدأ"
+        },
+        {
+          "name": "مقصد",
+          "value": "مسیر فایل/پوشه",
+          "description": "مسیر مقصد"
+        },
+        {
+          "name": "/v",
+          "value": "بدون مقدار",
+          "description": "تأیید صحت کپی"
+        }
+      ],
+      "examples": [
+        "copy file.txt D:\\Backup\\",
+        "copy *.jpg Photos\\"
+      ]
+    },
+    {
+      "command": "ipconfig",
+      "description": "نمایش اطلاعات شبکه",
+      "parameters": [
+        {
+          "name": "/all",
+          "value": "بدون مقدار",
+          "description": "نمایش جزئیات کامل"
+        },
+        {
+          "name": "/release",
+          "value": "بدون مقدار",
+          "description": "آزادسازی آدرس IP"
+        }
+      ],
+      "examples": [
+        "ipconfig",
+        "ipconfig /all"
+      ]
+    },
+    {
+      "command": "ping",
+      "description": "تست اتصال شبکه",
+      "parameters": [
+        {
+          "name": "مقصد",
+          "value": "IP/دامنه",
+          "description": "آدرس مقصد"
+        },
+        {
+          "name": "-t",
+          "value": "بدون مقدار",
+          "description": "پینگ مداوم"
+        }
+      ],
+      "examples": [
+        "ping google.com",
+        "ping 192.168.1.1 -t"
+      ]
+    },
+    {
+      "command": "tasklist",
+      "description": "نمایش فرآیندهای در حال اجرا",
+      "parameters": [
+        {
+          "name": "/svc",
+          "value": "بدون مقدار",
+          "description": "نمایش سرویس‌های مرتبط"
+        },
+        {
+          "name": "/fi",
+          "value": "فیلتر",
+          "description": "فیلتر بر اساس معیار (مثال: \"memusage gt 50000\")"
+        }
+      ],
+      "examples": [
+        "tasklist",
+        "tasklist /fi \"status eq running\""
+      ]
+    },
+    {
+      "command": "shutdown",
+      "description": "خاموش/ریستارت سیستم",
+      "parameters": [
+        {
+          "name": "/s",
+          "value": "بدون مقدار",
+          "description": "خاموش کردن"
+        },
+        {
+          "name": "/r",
+          "value": "بدون مقدار",
+          "description": "ریستارت"
+        },
+        {
+          "name": "/t",
+          "value": "ثانیه",
+          "description": "تأخیر زمانی (پیش‌فرض: 30 ثانیه)"
+        }
+      ],
+      "examples": [
+        "shutdown /s /t 60",
+        "shutdown /r /f"
+      ]
+    },
+    {
+      "command": "robocopy",
+      "description": "کپی مقاوم در برابر خطا",
+      "parameters": [
+        {
+          "name": "منبع",
+          "value": "مسیر",
+          "description": "مسیر مبدأ"
+        },
+        {
+          "name": "مقصد",
+          "value": "مسیر",
+          "description": "مسیر مقصد"
+        },
+        {
+          "name": "/mir",
+          "value": "بدون مقدار",
+          "description": "میرور کامل (حذف فایل‌های اضافی در مقصد)"
+        },
+        {
+          "name": "/mt",
+          "value": "تعداد",
+          "description": "استفاده از چند thread (مثال: /mt:16)"
+        }
+      ],
+      "examples": [
+        "robocopy C:\\Data D:\\Backup /mir",
+        "robocopy C:\\src D:\\dst /mt:8"
+      ]
+    },
+    {
+      "command": "netsh",
+      "description": "مدیریت پیشرفته شبکه",
+      "parameters": [
+        {
+          "name": "زیرفرمان",
+          "value": "دستور",
+          "description": "مثال: wlan show profiles"
+        }
+      ],
+      "examples": [
+        "netsh wlan show profiles",
+        "netsh interface ip show config"
+      ]
+    },
+    {
+      "command": "sfc",
+      "description": "تعمیر فایل‌های سیستمی",
+      "parameters": [
+        {
+          "name": "/scannow",
+          "value": "بدون مقدار",
+          "description": "اسکن و تعمیر فوری"
+        }
+      ],
+      "examples": [
+        "sfc /scannow"
+      ]
+    },
+    {
+      "command": "cls",
+      "description": "پاک کردن صفحه کنسول",
+      "parameters": [],
+      "examples": [
+        "cls"
+      ]
+    },
+    {
+      "command": "del",
+      "description": "حذف فایل‌ها",
+      "parameters": [
+        {
+          "name": "مسیر",
+          "value": "مسیر فایل/الگو",
+          "description": "مسیر یا الگوی فایل‌های مورد نظر (مثال: *.tmp)"
+        },
+        {
+          "name": "/q",
+          "value": "بدون مقدار",
+          "description": "حذف بدون تأیید"
+        }
+      ],
+      "examples": [
+        "del temp.txt",
+        "del /q *.log"
+      ]
+    },
+    {
+      "command": "ren",
+      "description": "تغییر نام فایل یا پوشه",
+      "parameters": [
+        {
+          "name": "منبع",
+          "value": "نام فعلی",
+          "description": "نام فعلی فایل یا پوشه"
+        },
+        {
+          "name": "مقصد",
+          "value": "نام جدید",
+          "description": "نام جدید فایل یا پوشه"
+        }
+      ],
+      "examples": [
+        "ren oldname.txt newname.txt",
+        "ren folder1 folder2"
+      ]
+    },
+    {
+      "command": "mkdir",
+      "description": "ایجاد پوشه جدید",
+      "parameters": [
+        {
+          "name": "نام پوشه",
+          "value": "رشته",
+          "description": "نام پوشه‌ای که باید ایجاد شود"
+        }
+      ],
+      "examples": [
+        "mkdir NewFolder",
+        "mkdir \"My Documents\\Projects\""
+      ]
+    },
+    {
+      "command": "rmdir",
+      "description": "حذف پوشه خالی",
+      "parameters": [
+        {
+          "name": "نام پوشه",
+          "value": "رشته",
+          "description": "نام پوشه‌ای که باید حذف شود"
+        },
+        {
+          "name": "/s",
+          "value": "بدون مقدار",
+          "description": "حذف پوشه و تمام محتویات آن"
+        },
+        {
+          "name": "/q",
+          "value": "بدون مقدار",
+          "description": "حذف بدون تأیید"
+        }
+      ],
+      "examples": [
+        "rmdir EmptyFolder",
+        "rmdir /s /q OldProject"
+      ]
+    },
+    {
+      "command": "type",
+      "description": "نمایش محتوای فایل متنی",
+      "parameters": [
+        {
+          "name": "مسیر فایل",
+          "value": "مسیر",
+          "description": "مسیر فایل مورد نظر"
+        }
+      ],
+      "examples": [
+        "type readme.txt",
+        "type C:\\Logs\\log.txt"
+      ]
+    },
+    {
+      "command": "find",
+      "description": "جستجوی متن در فایل",
+      "parameters": [
+        {
+          "name": "\"رشته\"",
+          "value": "متن",
+          "description": "رشته‌ای که باید جستجو شود"
+        },
+        {
+          "name": "فایل",
+          "value": "مسیر فایل",
+          "description": "فایلی که در آن جستجو انجام می‌شود"
+        },
+        {
+          "name": "/i",
+          "value": "بدون مقدار",
+          "description": "جستجوی غیرحساس به حروف کوچک و بزرگ"
+        }
+      ],
+      "examples": [
+        "find \"error\" log.txt",
+        "find /i \"warning\" *.log"
+      ]
+    },
+    {
+      "command": "taskkill",
+      "description": "توقف فرآیند",
+      "parameters": [
+        {
+          "name": "/pid",
+          "value": "شماره فرآیند",
+          "description": "شناسه فرآیند مورد نظر"
+        },
+        {
+          "name": "/f",
+          "value": "بدون مقدار",
+          "description": "توقف اجباری"
+        },
+        {
+          "name": "/im",
+          "value": "نام فایل",
+          "description": "نام فایل اجرایی فرآیند (مثال: notepad.exe)"
+        }
+      ],
+      "examples": [
+        "taskkill /pid 1234",
+        "taskkill /f /im chrome.exe"
+      ]
+    },
+    {
+      "command": "format",
+      "description": "فرمت کردن درایو",
+      "parameters": [
+        {
+          "name": "درایو:",
+          "value": "حرف درایو",
+          "description": "درایوی که باید فرمت شود (مثال: D:)"
+        },
+        {
+          "name": "/fs",
+          "value": "NTFS/FAT32",
+          "description": "نوع سیستم فایل"
+        },
+        {
+          "name": "/q",
+          "value": "بدون مقدار",
+          "description": "فرمت سریع"
+        }
+      ],
+      "examples": [
+        "format D: /fs:NTFS",
+        "format E: /q"
+      ]
+    },
+    {
+      "command": "systeminfo",
+      "description": "نمایش اطلاعات سیستم",
+      "parameters": [],
+      "examples": [
+        "systeminfo"
+      ]
+    }
+  ],
+  "metadata": {
+    "count": 20,
+    "note": "برای مشاهده راهنمای کامل هر دستور از /? استفاده کنید (مثال: ping /?)"
+  }
+}

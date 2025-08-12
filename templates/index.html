@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CMDX File Explorer</title>
+  <link rel="stylesheet" href="/static/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&display=swap" rel="stylesheet" />
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="/static/main.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+
+<body>
+  <h1 class="neon-cmdx">CMDX</h1>
+  <div class="container">
+    <div class="File_Explorer">
+      <div class="paraghrap">
+        <p>File Explorer</p>
+      </div>
+      <div class="forward-Back">
+        <form action="/" method="POST">
+          <button class="Back" name="Back" value="Back"> ← </button>
+        </form>
+      </div>
+
+      <div class="drives-and-folders">
+        <div class="drives">
+          <form action="/" method="POST">
+            {% for drive in drives %}
+            <button class="drive" name="drive" value="{{drive}}" data-tooltip="{{drive}}">
+              {{drive}}
+            </button>
+            {% endfor %}
+          </form>
+        </div>
+
+        <div class="folders-container">
+          <div class="folders">
+            <form action="/" method="POST">
+              {% if folders %}
+              {% for folder in folders %}
+              <button name="folder_name" value="{{folder}}" data-tooltip="{{folder}}">
+                {{folder}}
+              </button>
+              <br />
+              {% endfor %}
+              {% endif %}
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <div class="box"></div>
+    </div>
+
+    <div class="cmdx">
+      <div dir="rtl" class="terminal-output" id="terminal-output" style="margin: 5px;">
+        {% for item in command_history %}
+        <div class="command-entry">
+          <div class="command-line">
+            <span class="prompt">{{item.dir}}></span>
+            <span class="command">{{item.command}}</span>
+          </div>
+          <div class="command-output" id="output-{{loop.index}}">
+            {{ item.output | safe }}
+            <button class="copy-btn" data-output="output-{{loop.index}}">کپی</button>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      <button id="clear-console" style="margin-top:10px;width:100%;">clear</button>
+      <div class="command-input" style="width: 100%; position: relative;">
+        <div class="command-line">
+          <div id="suggestions-box" class="suggestions-box"></div>
+        </div>
+        <div class="command-line" style="width: 100%; align-items: left;">
+          <form id="command-form"
+            style="width: 100%; display: flex; flex-direction: row; justify-content: flex-start; align-items: center;">
+            <span class="prompt">{{current_dir}}></span>
+            <input id="command-input" class="input-text" name="command" type="text" autocomplete="off" autofocus
+              style="width: 100%; color: rgb(244, 85, 0); font-size: 20px;" />
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    window.commandHistory = {{ command_history | tojson }};
+    window.commandHistory = window.commandHistory.map(item => item.command);
+    document.addEventListener("DOMContentLoaded", function () {
+      // پردازش خروجی‌های Markdown
+      const outputElements = document.querySelectorAll('.command-output');
+
+      outputElements.forEach(element => {
+        const rawText = element.textContent;
+        const htmlContent = marked.parse(rawText);
+        element.innerHTML = htmlContent;
+
+        const copyBtn = document.createElement('button');
+        copyBtn.className = 'copy-btn';
+        copyBtn.innerText = 'کپی';
+        copyBtn.onclick = function () {
+          navigator.clipboard.writeText(rawText).then(() => {
+            alert('کپی شد!');
+          });
+        };
+        element.appendChild(copyBtn);
+      });
+    });
+  </script>
+</body>
+
+</html>
