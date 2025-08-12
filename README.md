@@ -78,7 +78,8 @@ python cmdx.py
 1. مخزن را Fork کنید
 2. تغییرات خود را در یک Branch جدید ایجاد کنید
 3. یک Pull Request ارسال کنید
-
+### License 
+[MIT](LICENSE)
 ---
 [دریافت api برای هوش مصنوعی](https://gapgpt.app/platform/tokens)
 <a name="english-section"></a>
@@ -141,7 +142,8 @@ Your contributions help this project grow! To contribute:
 2. Create your changes in a new branch
 3. Submit a Pull Request
 
-
+### License 
+[MIT](LICENSE)
 ---
 
 <div align="center">
