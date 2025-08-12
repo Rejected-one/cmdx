@@ -23,10 +23,10 @@
 ---
 
 <a name="farsi-section"></a>
+[دریافت api برای هوشمصنوعی](https://gapgpt.app/platform/tokens)
 ## 🌟 CMDX ترمینال - راهنمای فارسی
 
 CMDX یک شبیه‌ساز مدرن ترمینال ویندوز با قابلیت‌های پیشرفته و رابط کاربری بهبود یافته است. این پروژه با ترکیب قدرت پایتون، جاوااسکریپت و هوش مصنوعی، تجربه‌ای مشابه Command Prompt ویندوز را با امکانات اضافه ارائه می‌دهد.
-
 ### ✨ ویژگی‌های کلیدی
 - **شبیه‌سازی کامل محیط CMD** با پشتیبانی از دستورات واقعی
 - **اکسپلورر فایل یکپارچه** برای پیمایش درایوها و پوشه‌ها
@@ -82,6 +82,8 @@ python cmdx.py
 ---
 
 <a name="english-section"></a>
+[get AI api](https://gapgpt.app/platform/tokens)
+
 ## 🌟 CMDX Terminal - English Guide
 
 CMDX is a modern Windows command prompt simulator with advanced features and enhanced UI. Combining Python, JavaScript, and AI capabilities, it provides a Command Prompt-like experience with additional functionality.
