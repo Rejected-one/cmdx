@@ -147,14 +147,14 @@ Your contributions help this project grow! To contribute:
 <div align="center">
   <h3>Connect with me</h3>
   <p>
-    <a href="https://github.com/yourusername">
+    <a href="https://github.com/Rejected-one">
       <img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white" alt="GitHub">
     </a>
-    <a href="mailto:youremail@example.com">
+    <a href="mailto:mohammadjavadizadi86@gmail.com">
       <img src="https://img.shields.io/badge/Email-D14836?style=for-the-badge&logo=gmail&logoColor=white" alt="Email">
     </a>
   </p>
-  <p>© 2023 CMDX Terminal Project. All rights reserved.</p>
+  <p>© 2025 CMDX Terminal Project. All rights reserved.</p>
 </div>
 
 
