@@ -31,7 +31,7 @@ CMDX یک شبیه‌ساز مدرن ترمینال ویندوز با قابلی
 - **شبیه‌سازی کامل محیط CMD** با پشتیبانی از دستورات واقعی
 - **اکسپلورر فایل یکپارچه** برای پیمایش درایوها و پوشه‌ها
 - **سیستم پیشنهاد هوشمند** با نمایش پارامترها و مثال‌های دستوری
-- **دستیار هوش مصنوعی** برای یادگیری دستورات (با استفاده از OpenAI)
+- **دستیار هوش مصنوعی** برای یادگیری دستورات (با استفاده از Learn/)
 - **رابط کاربری مدرن** با تم تاریک و افکت‌های نئونی
 - **پشتیبانی از اجرای بلادرنگ** دستورات طولانی
 - **ریسپانسیو و سازگار** با تمام دستگاه‌ها
@@ -93,7 +93,7 @@ CMDX is a modern Windows command prompt simulator with advanced features and enh
 - **Full CMD environment simulation** with real command support
 - **Integrated file explorer** for drive and folder navigation
 - **Smart suggestion system** with parameter and command examples
-- **AI assistant** for learning commands (using OpenAI)
+- **AI assistant** for learning commands (using Learn/)
 - **Modern UI** with dark theme and neon effects
 - **Real-time execution** support for long-running commands
 - **Fully responsive** and compatible with all devices
