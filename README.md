@@ -1,4 +1,4 @@
-# CMDX Terminal - Professional GitHub README
+# CMDX Terminal
 
 
 <div align="center">
@@ -17,9 +17,9 @@
     <img src="https://img.shields.io/badge/Python-3.8%2B-blue?logo=python">
     <img src="https://img.shields.io/badge/Flask-2.0%2B-lightgrey?logo=flask">
     <img src="https://img.shields.io/badge/version-1.0.0-brightgreen">
+<a href="https://doi.org/10.5281/zenodo.16811094"><img src="https://zenodo.org/badge/1036494162.svg" alt="DOI"></a>
   </div>
 </div>
-
 ---
 
 <a name="farsi-section"></a>
@@ -31,7 +31,7 @@ CMDX یک شبیه‌ساز مدرن ترمینال ویندوز با قابلی
 - **شبیه‌سازی کامل محیط CMD** با پشتیبانی از دستورات واقعی
 - **اکسپلورر فایل یکپارچه** برای پیمایش درایوها و پوشه‌ها
 - **سیستم پیشنهاد هوشمند** با نمایش پارامترها و مثال‌های دستوری
-- **دستیار هوش مصنوعی** برای یادگیری دستورات (با استفاده از OpenAI)
+- **دستیار هوش مصنوعی** برای یادگیری دستورات (با استفاده از Learn/)
 - **رابط کاربری مدرن** با تم تاریک و افکت‌های نئونی
 - **پشتیبانی از اجرای بلادرنگ** دستورات طولانی
 - **ریسپانسیو و سازگار** با تمام دستگاه‌ها
@@ -78,7 +78,8 @@ python cmdx.py
 1. مخزن را Fork کنید
 2. تغییرات خود را در یک Branch جدید ایجاد کنید
 3. یک Pull Request ارسال کنید
-
+### License 
+[MIT](LICENSE)
 ---
 [دریافت api برای هوش مصنوعی](https://gapgpt.app/platform/tokens)
 <a name="english-section"></a>
@@ -92,7 +93,7 @@ CMDX is a modern Windows command prompt simulator with advanced features and enh
 - **Full CMD environment simulation** with real command support
 - **Integrated file explorer** for drive and folder navigation
 - **Smart suggestion system** with parameter and command examples
-- **AI assistant** for learning commands (using OpenAI)
+- **AI assistant** for learning commands (using Learn/)
 - **Modern UI** with dark theme and neon effects
 - **Real-time execution** support for long-running commands
 - **Fully responsive** and compatible with all devices
@@ -141,7 +142,8 @@ Your contributions help this project grow! To contribute:
 2. Create your changes in a new branch
 3. Submit a Pull Request
 
-
+### License 
+[MIT](LICENSE)
 ---
 
 <div align="center">
