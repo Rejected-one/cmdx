@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>آموزش دستورات خطرناک کامند</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            width: 90%;
+            max-width: 800px;
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #eaeaea;
+        }
+
+        .header h1 {
+            color: #b21f1f;
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #555;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .warning {
+            background-color: #fff8e1;
+            border-right: 5px solid #ffc107;
+            padding: 15px;
+            margin-bottom: 25px;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+        }
+
+        .warning-icon {
+            font-size: 24px;
+            margin-left: 10px;
+            color: #ff9800;
+        }
+
+        .command-card {
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            display: none;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        .command-card.active {
+            display: block;
+        }
+
+        .command-name {
+            font-size: 24px;
+            color: #b21f1f;
+            margin-bottom: 15px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .command-description {
+            font-size: 16px;
+            line-height: 1.7;
+            margin-bottom: 15px;
+            color: #444;
+        }
+
+        .command-syntax {
+            background-color: #2d3748;
+            color: #e2e8f0;
+            padding: 12px;
+            border-radius: 5px;
+            font-family: monospace;
+            margin-bottom: 15px;
+            direction: ltr;
+            text-align: left;
+        }
+
+        .command-dangers {
+            background-color: #fed7d7;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .command-dangers h3 {
+            color: #c53030;
+            margin-bottom: 10px;
+        }
+
+        .command-dangers ul {
+            padding-right: 20px;
+        }
+
+        .command-dangers li {
+            margin-bottom: 8px;
+        }
+
+        .progress-bar {
+            height: 8px;
+            background-color: #e2e8f0;
+            border-radius: 4px;
+            margin: 25px 0;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            background: linear-gradient(to right, #1a2a6c, #b21f1f);
+            width: 16.66%;
+            transition: width 0.3s ease;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+
+        .btn-prev {
+            background-color: #e2e8f0;
+            color: #4a5568;
+        }
+
+        .btn-prev:hover:not(:disabled) {
+            background-color: #cbd5e0;
+        }
+
+        .btn-next {
+            background-color: #1a2a6c;
+            color: white;
+        }
+
+        .btn-next:hover:not(:disabled) {
+            background-color: #2d3748;
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .completion-message {
+            text-align: center;
+            padding: 40px 20px;
+            display: none;
+        }
+
+        .completion-message h2 {
+            color: #1a2a6c;
+            margin-bottom: 20px;
+        }
+
+        .completion-message p {
+            font-size: 18px;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .restart-btn {
+            background-color: #fdbb2d;
+            color: #333;
+        }
+
+        .restart-btn:hover {
+            background-color: #f7a800;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+
+            .header h1 {
+                font-size: 24px;
+            }
+
+            .command-name {
+                font-size: 20px;
+            }
+
+            button {
+                padding: 10px 20px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>آموزش دستورات خطرناک کامند</h1>
+            <p>این دستورات در صورت استفاده نادرست می‌توانند باعث از دست رفتن اطلاعات یا اختلال در سیستم شوند</p>
+        </div>
+
+        <div class="warning">
+            <span class="warning-icon">⚠</span>
+            <p>لطفاً این دستورات را فقط در صورت اطمینان کامل اجرا کنید و همیشه از اطلاعات مهم خود پشتیبان بگیرید.</p>
+        </div>
+
+        <div class="progress-bar">
+            <div class="progress" id="progress"></div>
+        </div>
+
+        <!-- دستور del -->
+        <div class="command-card active" id="command-1">
+            <div class="command-name">دستور del</div>
+            <div class="command-description">
+                دستور del برای حذف یک یا چند فایل در خط فرمان ویندوز استفاده می‌شود. این دستور فایل‌ها را به طور دائمی
+                حذف می‌کند و آن‌ها را به سطل بازیافت منتقل نمی‌کند.
+            </div>
+            <div class="command-syntax">del [options] [file_path]</div>
+            <div class="command-dangers">
+                <h3>خطرات احتمالی:</h3>
+                <ul>
+                    <li>حذف دائمی فایل‌ها بدون امکان بازیابی</li>
+                    <li>امکان حذف تصادفی فایل‌های مهم سیستم</li>
+                    <li>استفاده از wildcardها مانند *.* می‌تواند تمام فایل‌های یک پوشه را حذف کند</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- دستور rmdir -->
+        <div class="command-card" id="command-2">
+            <div class="command-name">دستور rmdir</div>
+            <div class="command-description">
+                دستور rmdir برای حذف پوشه‌ها (دایرکتوری‌ها) در خط فرمان ویندوز استفاده می‌شود. با استفاده از پارامتر /S
+                می‌توان پوشه و تمام محتویات آن را حذف کرد.
+            </div>
+            <div class="command-syntax">rmdir /S [folder_path]</div>
+            <div class="command-dangers">
+                <h3>خطرات احتمالی:</h3>
+                <ul>
+                    <li>حذف دائمی پوشه‌ها و تمام محتویات آنها</li>
+                    <li>امکان حذف تصادفی پوشه‌های حاوی اطلاعات مهم</li>
+                    <li>عدم انتقال فایل‌ها به سطل بازیافت</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- دستور format -->
+        <div class="command-card" id="command-3">
+            <div class="command-name">دستور format</div>
+            <div class="command-description">
+                دستور format برای فرمت کردن درایوها در ویندوز استفاده می‌شود. این دستور تمام داده‌های موجود در درایو را
+                پاک کرده و سیستم فایل جدیدی ایجاد می‌کند.
+            </div>
+            <div class="command-syntax">format [drive_letter]:</div>
+            <div class="command-dangers">
+                <h3>خطرات احتمالی:</h3>
+                <ul>
+                    <li>پاک کردن تمام داده‌های موجود در درایو</li>
+                    <li>از دست رفتن دائمی اطلاعات در صورت عدم پشتیبان‌گیری</li>
+                    <li>امکان فرمت کردن تصادفی درایوهای سیستم</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- دستور taskkill -->
+        <div class="command-card" id="command-4">
+            <div class="command-name">دستور taskkill</div>
+            <div class="command-description">
+                دستور taskkill برای پایان دادن به یک فرآیند یا برنامه در حال اجرا در ویندوز استفاده می‌شود. این دستور
+                می‌تواند فرآیندها را به صورت اجباری متوقف کند.
+            </div>
+            <div class="command-syntax">taskkill /F /IM [process_name.exe]</div>
+            <div class="command-dangers">
+                <h3>خطرات احتمالی:</h3>
+                <ul>
+                    <li>متوقف کردن فرآیندهای حیاتی سیستم</li>
+                    <li>از دست دادن داده‌های ذخیره نشده در برنامه‌ها</li>
+                    <li>ایجاد بی‌ثباتی در سیستم</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- دستور sfc -->
+        <div class="command-card" id="command-5">
+            <div class="command-name">دستور sfc</div>
+            <div class="command-description">
+                دستور sfc (System File Checker) برای اسکن و بازیابی فایل‌های سیستم ویندوز استفاده می‌شود. این دستور
+                می‌تواند فایل‌های سیستم آسیب دیده را با نسخه‌های اصلی جایگزین کند.
+            </div>
+            <div class="command-syntax">sfc /scannow</div>
+            <div class="command-dangers">
+                <h3>خطرات احتمالی:</h3>
+                <ul>
+                    <li>جایگزینی فایل‌های سیستم بدون اطلاع کاربر</li>
+                    <li>امکان ایجاد مشکل در سیستم در صورت خرابی فایل‌های پشتیبان</li>
+                    <li>تغییرات ناخواسته در پیکربندی سیستم</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- دستور shutdown -->
+        <div class="command-card" id="command-6">
+            <div class="command-name">دستور shutdown</div>
+            <div class="command-description">
+                دستور shutdown برای خاموش کردن، راه‌اندازی مجدد یا خواب زمستانی کامپیوتر استفاده می‌شود. این دستور
+                می‌تواند سیستم را بدون هشدار خاموش کند.
+            </div>
+            <div class="command-syntax">shutdown /s /t 0</div>
+            <div class="command-dangers">
+                <h3>خطرات احتمالی:</h3>
+                <ul>
+                    <li>خاموش کردن ناگهانی سیستم و از دست رفتن داده‌های ذخیره نشده</li>
+                    <li>امکان خاموش کردن سیستم از راه دور</li>
+                    <li>ایجاد اختلال در کارهای در حال انجام</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- پیام تکمیل آموزش -->
+        <div class="completion-message" id="completion-message">
+            <h2>آموزش کامل شد!</h2>
+            <p>شما با دستورات خطرناک کامند آشنا شدید. به یاد داشته باشید که این دستورات را با احتیاط کامل استفاده کنید و
+                همیشه قبل از اجرای آن‌ها از اطلاعات مهم خود پشتیبان بگیرید.</p>
+            <button class="restart-btn" id="restart-btn">شروع مجدد آموزش</button>
+        </div>
+
+        <div class="navigation">
+            <button class="btn-prev" id="prev-btn" disabled>قبلی</button>
+            <button class="btn-next" id="next-btn">بعدی</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const commandCards = document.querySelectorAll('.command-card');
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            const restartBtn = document.getElementById('restart-btn');
+            const progressBar = document.getElementById('progress');
+            const completionMessage = document.getElementById('completion-message');
+
+            let currentCardIndex = 0;
+            const totalCards = commandCards.length;
+
+            // به روزرسانی وضعیت دکمه‌ها و نوار پیشرفت
+            function updateNavigation() {
+                prevBtn.disabled = currentCardIndex === 0;
+
+                if (currentCardIndex === totalCards - 1) {
+                    nextBtn.textContent = 'پایان';
+                } else {
+                    nextBtn.textContent = 'بعدی';
+                }
+
+                // به روزرسانی نوار پیشرفت
+                const progressWidth = ((currentCardIndex + 1) / totalCards) * 100;
+                progressBar.style.width = `${progressWidth}%`;
+            }
+
+            // نمایش کارت فعلی و پنهان کردن بقیه
+            function showCurrentCard() {
+                commandCards.forEach((card, index) => {
+                    if (index === currentCardIndex) {
+                        card.classList.add('active');
+                    } else {
+                        card.classList.remove('active');
+                    }
+                });
+
+                // نمایش پیام تکمیل در صورت پایان آموزش
+                if (currentCardIndex >= totalCards) {
+                    completionMessage.style.display = 'block';
+                    document.querySelector('.navigation').style.display = 'none';
+                    document.querySelector('.progress-bar').style.display = 'none';
+                } else {
+                    completionMessage.style.display = 'none';
+                    document.querySelector('.navigation').style.display = 'flex';
+                    document.querySelector('.progress-bar').style.display = 'block';
+                }
+
+                updateNavigation();
+            }
+            async function send_access(value) {
+                try {
+                    const response = await fetch("http://127.0.0.1:5000//adc", {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(value)
+                    });
+                }
+                catch (error) {
+                    console.error('خطا در دریافت داده:', error);
+                }
+            };
+            // رفتن به کارت بعدی
+            nextBtn.addEventListener('click', function () {
+                if (currentCardIndex < totalCards - 1) {
+                    currentCardIndex++;
+                    showCurrentCard();
+                } else {
+                    // پایان آموزش
+                    currentCardIndex = totalCards;
+                    showCurrentCard();
+                    send_access("ok");
+
+                }
+            });
+
+            // رفتن به کارت قبلی
+            prevBtn.addEventListener('click', function () {
+                if (currentCardIndex > 0) {
+                    currentCardIndex--;
+                    showCurrentCard();
+                }
+            });
+
+            // شروع مجدد آموزش
+            restartBtn.addEventListener('click', function () {
+                currentCardIndex = 0;
+                showCurrentCard();
+            });
+
+            // مقداردهی اولیه
+            showCurrentCard();
+        });
+    </script>
+</body>
+
+</html>

@@ -5,6 +5,7 @@ import string
 from datetime import datetime
 import json
 from openai import OpenAI
+from flask_cors import CORS
 
 
 def generate_random_string_choices(length):
@@ -16,6 +17,7 @@ def generate_random_string_choices(length):
 random_str_choices = generate_random_string_choices(15)
 
 app = Flask(__name__)
+CORS(app)
 app.secret_key = random_str_choices
 
 
@@ -36,7 +38,7 @@ def cmdx():
         drives = f"Error executing driverquery: {e}"
 
     if request.method == "POST":
-        
+
         drive = request.form.get("drive")
         folder_name = request.form.get("folder_name")
         Back = request.form.get("Back") == "Back"
@@ -226,15 +228,15 @@ def live_command():
 @app.route("/learn", methods=["POST"])
 def learn():
     command = request.form.get("command", "")
-    print("[[[]]]", command.replace("Learn\\",""))
+    print("[[[]]]", command.replace("Learn\\", ""))
     client = OpenAI(
         base_url="https://api.gapgpt.app/v1",
-        api_key="YOUR_API_KEY",
+        api_key="sk-NGd9H2XzGXR1dyP7yqjr7j9Jd2c4KmgwCCopeTWwenRXhGWK",
     )
 
     try:
         response = client.chat.completions.create(
-            model="gemini-2.0-flash-lite-001",
+            model="gemma-3-27b-it",
             messages=[
                 {
                     "role": "user",
@@ -249,19 +251,18 @@ def learn():
         )
         output = response.choices[0].message.content
         session["command_history"].append(
-        {
-            "command": command,
-            "output": output,
-            "dir": session.get("folder_name", ""),
-            "time": datetime.now().strftime("%H:%M:%S"),
-        }
-    )
+            {
+                "command": command,
+                "output": output,
+                "dir": session.get("folder_name", ""),
+                "time": datetime.now().strftime("%H:%M:%S"),
+            }
+        )
         session.modified = True
         return jsonify({"status": "ok", "output": output})
 
     except Exception as e:
         return jsonify({"status": "error", "message": str(e)}), 500
-
 
 
 @app.route("/run", methods=["POST"])
@@ -292,6 +293,15 @@ def clear_history():
     session.modified = True
     return jsonify({"status": "ok"})
 
+
+# accesses dangerous commands
+@app.route("/adc", methods=["POST"])
+def adc():
+    data = request.get_json()
+    if not data:
+        return jsonify({"error": "بدنهٔ درخواست خالی است"}), 400
+    print(data)
+    return jsonify({"status": "success"}), 200
 
 with open("p:\\.program\\cmdx\\data.json", encoding="utf-8") as f:
     CMD_DATABASE = json.load(f)["cmd_commands"]
