@@ -2,7 +2,7 @@
 
 
 <div align="center">
-  <img src="LOGO.png" alt="CMDX Terminal Logo" width="200">
+  <img src="images/LOGO.png" alt="CMDX Terminal Logo" width="200">
   <h1>CMDX Terminal</h1>
   <p>Modern Windows Command Prompt Simulator with AI Assistant</p>
   
@@ -67,10 +67,10 @@ python cmdx.py
 ```
 
 ### 🖥️ تصاویر از محیط برنامه
-![](cmdx.png)
+![](images/cmdx.png)
 *شکل 1: محیط اصلی ترمینال و اکسپلورر فایل*
 
-![](suggestions.png)
+![](images/suggestions.png)
 *شکل 2: سیستم پیشنهاد هوشمند دستورات*
 
 ### 🤝 مشارکت در پروژه
@@ -130,10 +130,10 @@ python cmdx.py
 ```
 
 ### 🖥️ Application Screenshots
-![](cmdx.png)
+![](images/cmdx.png)
 *Figure 1: Main terminal and file explorer interface*
 
-![](suggestions.png)
+![](images/suggestions.png)
 *Figure 2: Smart command suggestion system*
 
 ### 🤝 Contributing
