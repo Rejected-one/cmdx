@@ -1,30 +1,30 @@
 from flask import Flask, render_template, request, session, jsonify, Response
 import subprocess, os
-import random
-import string
 from datetime import datetime
 import json
 from openai import OpenAI
-from flask_cors import CORS
 
-
-def generate_random_string_choices(length):
-    characters = string.ascii_letters + string.digits
-    random_string = "".join(random.choices(characters, k=length))
-    return random_string
-
-
-random_str_choices = generate_random_string_choices(15)
 
 app = Flask(__name__)
-CORS(app)
-app.secret_key = random_str_choices
 
+
+user_sessions = {}
+
+def Access():
+    adc = False
+    if not os.path.exists("access.txt"):
+        with open("access.txt", "w") as f:
+            f.write("AccessesDangerousCommand:False")
+    else:
+        with open("access.txt", "r+") as f:
+            adc = f.read().split(":")[1]
+    return adc
+Access()
 
 @app.route("/", methods=["GET", "POST"])
 def cmdx():
-    if "command_history" not in session:
-        session["command_history"] = []
+    if "command_history" not in user_sessions:
+        user_sessions["command_history"] = []
 
     # File Explorer logic
     path = None
@@ -45,15 +45,15 @@ def cmdx():
         forward = request.form.get("forward") == "forward"
 
         if drive:
-            session["drive"] = drive
-            session["folder_name"] = drive
+            user_sessions["drive"] = drive
+            user_sessions["folder_name"] = drive
         else:
-            drive = session.get("drive")
+            drive = user_sessions.get("drive")
 
         if folder_name:
-            session["folder_name"] = folder_name
+            user_sessions["folder_name"] = folder_name
         else:
-            folder_name = session.get("folder_name")
+            folder_name = user_sessions.get("folder_name")
 
         path = folder_name
         if not path:
@@ -66,16 +66,16 @@ def cmdx():
                 path_Back = [p + "\\" for p in parts[:-1]] + [parts[-1]]
                 path_Back = ("".join(path_Back[:-1]))[:-1]
                 path_finall = path_Back
-                session["folder_name"] = path_finall
-                session["path_forward"] = path
+                user_sessions["folder_name"] = path_finall
+                user_sessions["path_forward"] = path
 
             if forward:
-                path_forward = session.get("path_forward")
+                path_forward = user_sessions.get("path_forward")
                 path_finall = path_forward
-                session["folder_name"] = path_finall
+                user_sessions["folder_name"] = path_finall
 
             if drive and path and drive.split("\\")[0] != path.split("\\")[0]:
-                session.pop("folder_name", None)
+                user_sessions.pop("folder_name", None)
 
             folders = folder_tree(os.path.join(drive or "", path_finall or ""))
 
@@ -84,11 +84,11 @@ def cmdx():
                 drives=drives.replace("Drives: ", "").replace("\n", "").split(" ")[:-1],
                 folders=folders,
                 current_dir=(
-                    (session.get("folder_name", "") + ">")
-                    if session.get("folder_name")
+                    (user_sessions.get("folder_name", "") + ">")
+                    if user_sessions.get("folder_name")
                     else ""
                 ),
-                command_history=session["command_history"],
+                command_history=user_sessions["command_history"],
                 current_time=datetime.now().strftime("%H:%M:%S"),
             )
 
@@ -97,7 +97,7 @@ def cmdx():
         drives=drives.replace("Drives: ", "").replace("\n", "").split(" ")[:-1],
         folders=None,
         current_dir="",
-        command_history=session["command_history"],
+        command_history=user_sessions["command_history"],
         current_time=datetime.now().strftime("%H:%M:%S"),
     )
 
@@ -222,7 +222,9 @@ def live_command():
             except:
                 pass
 
-    return Response(generate(session.get("folder_name", "")), mimetype="text/html")
+    return Response(
+        generate(user_sessions.get("folder_name", "")), mimetype="text/html"
+    )
 
 
 @app.route("/learn", methods=["POST"])
@@ -250,15 +252,15 @@ def learn():
             ],
         )
         output = response.choices[0].message.content
-        session["command_history"].append(
+        user_sessions["command_history"].append(
             {
                 "command": command,
                 "output": output,
-                "dir": session.get("folder_name", ""),
+                "dir": user_sessions.get("folder_name", ""),
                 "time": datetime.now().strftime("%H:%M:%S"),
             }
         )
-        session.modified = True
+
         return jsonify({"status": "ok", "output": output})
 
     except Exception as e:
@@ -268,13 +270,13 @@ def learn():
 @app.route("/run", methods=["POST"])
 def run_command_normal():
     command = request.form.get("command", "")
-    if "command_history" not in session:
-        session["command_history"] = []
+    if "command_history" not in user_sessions:
+        user_sessions["command_history"] = []
 
-    current_dir = session.get("folder_name", "")
+    current_dir = user_sessions.get("folder_name", "")
     output = run_commands(current_dir, command)
 
-    session["command_history"].append(
+    user_sessions["command_history"].append(
         {
             "command": command,
             "output": output,
@@ -282,29 +284,43 @@ def run_command_normal():
             "time": datetime.now().strftime("%H:%M:%S"),
         }
     )
-    session.modified = True
 
     return jsonify({"status": "ok", "output": output})
 
 
 @app.route("/clear_history", methods=["POST"])
 def clear_history():
-    session["command_history"] = []
-    session.modified = True
+    user_sessions["command_history"] = []
+
     return jsonify({"status": "ok"})
 
 
 # accesses dangerous commands
 @app.route("/adc", methods=["POST"])
-def adc():
+def Adc():
+
     data = request.get_json()
     if not data:
         return jsonify({"error": "بدنهٔ درخواست خالی است"}), 400
-    print(data)
-    return jsonify({"status": "success"}), 200
+    with open("access.txt", "w") as f:
+        f.write("AccessesDangerousCommand:True")
+    return jsonify({"status": Access(), "message": "وضعیت مجوز کاربر"}), 200
 
-with open("p:\\.program\\cmdx\\data.json", encoding="utf-8") as f:
+
+@app.route("/api/adc_status")
+def get_adc_status():
+    return jsonify({"status": Access(), "message": "وضعیت مجوز کاربر"})
+
+
+@app.route("/learn_dangerous_commands.html", methods=["POST", "GET"])
+def learn_dangerous_commands():
+    return render_template("learn_dangerous_commands.html")
+
+
+with open("data.json", encoding="utf-8") as f:
     CMD_DATABASE = json.load(f)["cmd_commands"]
 
+
 if __name__ == "__main__":
+
     app.run()

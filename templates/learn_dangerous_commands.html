@@ -438,12 +438,18 @@
                             'Content-Type': 'application/json'
                         },
                         body: JSON.stringify(value)
-                    });
+                    }
+                 );
+                await delay(200)
                 }
                 catch (error) {
                     console.error('خطا در دریافت داده:', error);
                 }
             };
+            function closeTab() {
+                
+                window.close();
+            }
             // رفتن به کارت بعدی
             nextBtn.addEventListener('click', function () {
                 if (currentCardIndex < totalCards - 1) {
@@ -453,7 +459,8 @@
                     // پایان آموزش
                     currentCardIndex = totalCards;
                     showCurrentCard();
-                    send_access("ok");
+                    send_access("True");
+                    closeTab();
 
                 }
             });

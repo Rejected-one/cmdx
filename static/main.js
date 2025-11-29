@@ -32,7 +32,7 @@ const elements = {
     get terminalOutput() { return document.getElementById('terminal-output'); },
     get suggestionsBox() { return document.getElementById('suggestions-box'); },
     get foldersContainer() { return document.querySelector('.folders'); }
-    
+
 };
 
 // ==================== UTILITY FUNCTIONS ====================
@@ -54,12 +54,12 @@ const utils = {
 
     addToHistory(cmd) {
         if (!cmd || !cmd.trim()) return;
-        
+
         window.commandHistory = window.commandHistory || [];
-        if (window.commandHistory.length === 0 || 
+        if (window.commandHistory.length === 0 ||
             window.commandHistory[window.commandHistory.length - 1] !== cmd) {
             window.commandHistory.push(cmd);
-            
+
             try {
                 localStorage.setItem('commandHistory', JSON.stringify(window.commandHistory));
             } catch (e) {
@@ -73,17 +73,69 @@ const utils = {
         if (!element) return;
 
         const firstWord = commandText.split(" ")[0];
-        
+
         if (CONFIG.dangerousCommands.includes(firstWord)) {
             element.style.color = CONFIG.colors.danger;
-        } else if (state.currentSuggestions.length > 0 && 
-                   state.currentSuggestions[0].command === firstWord) {
+        } else if (state.currentSuggestions.length > 0 &&
+            state.currentSuggestions[0].command === firstWord) {
             element.style.color = CONFIG.colors.valid;
         } else {
             element.style.color = CONFIG.colors.warning;
         }
     }
 };
+
+// ==================== DANGEROUS COMMANDS HANDLER ====================
+async function checkCommandPermission(cmd) {
+    const firstWord = cmd.split(" ")[0];
+
+    if (CONFIG.dangerousCommands.includes(firstWord)) {
+        try {
+            const response = await fetch('/api/adc_status');
+            const data = await response.json();
+            console.log("ADC Status:", data.status);
+            console.log(data.status !== "True");
+            return data.status !== "True"; // true = block command, false = allow command
+        } catch (error) {
+            console.error("خطا در بررسی مجوز:", error);
+            
+            return true; // در صورت خطا، دستور اجرا نشود
+        }
+    }
+
+    return false; // اگر دستور خطرناک نبود، اجازه اجرا بده
+}
+
+function adc(cmd) {
+    const firstWord = cmd.split(" ")[0];
+
+    if (CONFIG.dangerousCommands.includes(firstWord)) {
+        // نمایش هشدار بلافاصله
+        const warningHTML = `
+            <div class="warning-message" style="background: #1a1a1a; border: 1px solid #ff4444; padding: 15px; margin: 15px 0; border-radius: 8px; box-shadow: 0 0 15px rgba(255, 68, 68, 0.3);">
+                <p style="margin: 0 0 12px 0; color: #ff6b6b; font-size: 16px; font-weight: bold;">
+                    ⚠️ دستور خطرناک شناسایی شد
+                </p>
+                <p style="margin: 0 0 15px 0; color: #ccc;">
+                    برای استفاده از دستور <strong style="color: #ff4444;">${cmd}</strong> نیاز به یادگیری دارید
+                </p>
+                <a href="/learn_dangerous_commands.html" 
+                   style="color: #4AF626; text-decoration: none; font-weight: bold; padding: 8px 16px; border: 1px solid #4AF626; border-radius: 4px; display: inline-block; transition: all 0.3s;"
+                   onmouseover="this.style.background='#4AF626'; this.style.color='#000';"
+                   onmouseout="this.style.background='transparent'; this.style.color='#4AF626';"
+                   target="_blank">
+                    📚 رفتن به صفحه آموزش
+                </a>
+            </div>
+        `;
+
+        elements.terminalOutput.insertAdjacentHTML('beforeend', warningHTML);
+        utils.scrollToBottom();
+        return true;
+    }
+
+    return false;
+}
 
 // ==================== AI FUNCTION ====================
 function ai(cmd) {
@@ -92,7 +144,7 @@ function ai(cmd) {
         type: "POST",
         dataType: 'json',
         data: { command: cmd },
-        success: function(data) {
+        success: function (data) {
             if (data && data.output !== undefined) {
                 const outputText = String(data.output);
                 const outputId = 'output-' + Date.now();
@@ -107,7 +159,7 @@ function ai(cmd) {
             }
             utils.scrollToBottom();
         },
-        error: function() {
+        error: function () {
             $('#terminal-output').append('<div class="command-output command-error">هوش مصنوعی پاسخ نداد. اینترنت خود را چک کنید.</div>');
             utils.scrollToBottom();
         }
@@ -121,14 +173,14 @@ const suggestionsManager = {
         utils.updateInputColor(fullCommand);
 
         $.get(CONFIG.endpoints.suggest, { command: inputText })
-            .done(function(data) {
+            .done(function (data) {
                 if (data.suggestions && data.suggestions.length > 0) {
                     suggestionsManager.showSuggestions(data.suggestions, fullCommand);
                 } else {
                     suggestionsManager.hideSuggestions();
                 }
             })
-            .fail(function() {
+            .fail(function () {
                 console.error('Error fetching suggestions');
                 suggestionsManager.hideSuggestions();
             });
@@ -136,19 +188,19 @@ const suggestionsManager = {
 
     showSuggestions(suggestions, fullCommand) {
         utils.updateInputColor(fullCommand);
-        
+
         state.currentSuggestions = suggestions;
         elements.suggestionsBox.innerHTML = '';
         state.selectedSuggestionIndex = -1;
 
         suggestions.forEach((suggestion, index) => {
-            const paramsHtml = suggestion.parameters && suggestion.parameters.length > 0 
-                ? `<div class="params">${suggestion.parameters.map(p => 
+            const paramsHtml = suggestion.parameters && suggestion.parameters.length > 0
+                ? `<div class="params">${suggestion.parameters.map(p =>
                     `<span>${p.name}: ${p.description}</span>`).join('<br>')}</div>`
                 : '';
 
-            const examplesHtml = suggestion.examples && suggestion.examples.length > 0 
-                ? `<div class="examples">${suggestion.examples.map(e => 
+            const examplesHtml = suggestion.examples && suggestion.examples.length > 0
+                ? `<div class="examples">${suggestion.examples.map(e =>
                     `<span>${e}</span>`).join('<br>')}</div>`
                 : '';
 
@@ -186,7 +238,7 @@ const suggestionsManager = {
         const selectedItem = items[state.selectedSuggestionIndex];
         selectedItem.classList.add('highlighted');
 
-        elements.suggestionsBox.scrollTop = 
+        elements.suggestionsBox.scrollTop =
             selectedItem.offsetTop + elements.suggestionsBox.scrollTop();
     },
 
@@ -216,23 +268,23 @@ const commandExecutor = {
                 <span class="command">${utils.escapeHtml(cmd)}</span>
             </div>`
         );
-        
+
         if (state.liveRequest) {
             state.liveRequest.abort();
         }
-        
+
         state.liveRequest = $.ajax({
             url: CONFIG.endpoints.live,
             type: 'POST',
             data: { command: cmd },
             xhrFields: {
-                onprogress: function(e) {
+                onprogress: function (e) {
                     $('#terminal-output').append(e.currentTarget.response);
                     utils.scrollToBottom();
                 }
             },
-            success: function() {},
-            error: function() {
+            success: function () { },
+            error: function () {
                 $('#terminal-output').append('<div class="command-output">خطا در اجرا یا کنسل شد</div>');
             }
         });
@@ -252,7 +304,7 @@ const commandExecutor = {
             type: 'POST',
             dataType: 'json',
             data: { command: cmd },
-            success: function(data) {
+            success: function (data) {
                 if (data && data.output !== undefined) {
                     const safeOutput = utils.escapeHtml(String(data.output)).replace(/\n/g, '<br>');
                     $('#terminal-output').append('<div class="command-output">' + safeOutput + '</div>');
@@ -261,36 +313,49 @@ const commandExecutor = {
                 }
                 utils.scrollToBottom();
             },
-            error: function() {
+            error: function () {
                 $('#terminal-output').append('<div class="command-output command-error">خطا در اجرای معمولی</div>');
                 utils.scrollToBottom();
             }
         });
     },
 
-    executeCommand(cmd) {
+    async executeCommand(cmd) {
+        // بررسی دستورات خطرناک
+        const shouldBlock = await checkCommandPermission(cmd);
+        if (shouldBlock) {
+            adc(cmd); // نمایش هشدار
+            return;
+        }
+
         if (cmd.includes("Learn\\")) {
             ai(cmd);
         } else {
-            commandExecutor.runCommand(cmd);
+            this.runCommand(cmd);
         }
     },
 
-    executeLiveCommand(cmd) {
+    async executeLiveCommand(cmd) {
+        // بررسی دستورات خطرناک
+        const shouldBlock = await checkCommandPermission(cmd);
+        if (shouldBlock) {
+            adc(cmd); // نمایش هشدار
+            return;
+        }
+
         if (cmd.includes("Learn\\")) {
             ai(cmd);
         } else {
-            commandExecutor.runLiveCommand(cmd);
+            this.runLiveCommand(cmd);
         }
     }
 };
-
 // ==================== EVENT HANDLERS ====================
 const eventHandlers = {
     handleInput() {
         const inputText = elements.input.value;
         const lastWord = inputText.split(' ').pop();
-        
+
         if (lastWord.length > 0) {
             suggestionsManager.fetchSuggestions(lastWord, inputText);
         } else {
@@ -326,7 +391,10 @@ const eventHandlers = {
                     suggestionsManager.selectSuggestion(state.currentSuggestions[state.selectedSuggestionIndex]);
                 } else if (cmd.trim()) {
                     utils.addToHistory(cmd);
-                    commandExecutor.executeCommand(cmd);
+                    // اجرای async بدون await
+                    commandExecutor.executeCommand(cmd).catch(error => {
+                        console.error("خطا در اجرای دستور:", error);
+                    });
                     elements.input.value = '';
                     suggestionsManager.hideSuggestions();
                 } else {
@@ -369,76 +437,21 @@ const eventHandlers = {
                 if (cmd.trim()) {
                     utils.addToHistory(cmd);
                     if (e.shiftKey) {
-                        commandExecutor.executeLiveCommand(cmd);
+                        // اجرای async بدون await
+                        commandExecutor.executeLiveCommand(cmd).catch(error => {
+                            console.error("خطا در اجرای دستور زنده:", error);
+                        });
                     } else {
-                        commandExecutor.executeCommand(cmd);
+                        // اجرای async بدون await
+                        commandExecutor.executeCommand(cmd).catch(error => {
+                            console.error("خطا در اجرای دستور:", error);
+                        });
                     }
                     elements.input.value = '';
                 }
                 break;
         }
     },
-
-    handleSuggestionClick(e) {
-        if (e.target.classList.contains('suggestion-item')) {
-            const cmd = e.target.dataset.command;
-            suggestionsManager.selectSuggestion(state.currentSuggestions.find(s => s.command === cmd));
-        }
-    },
-
-    handleCopyClick(e) {
-        if (e.target.classList.contains('copy-btn')) {
-            const outputId = e.target.dataset.output;
-            const text = document.getElementById(outputId).cloneNode(true);
-            text.querySelector('button')?.remove();
-            const textContent = text.textContent.trim();
-            
-            navigator.clipboard.writeText(textContent);
-            e.target.textContent = 'کپی شد!';
-            e.target.style.background = '#FFD700';
-            
-            setTimeout(() => {
-                e.target.textContent = 'کپی';
-                e.target.style.background = '#4AF626';
-            }, 1200);
-        }
-    },
-
-    handleGlobalKeyDown(e) {
-        if (e.key === 'Escape') {
-            if (state.liveRequest) {
-                state.liveRequest.abort();
-                state.liveRequest = null;
-                $('#terminal-output').append('<div class="command-output command-warning">دستور کنسل شد</div>');
-                utils.scrollToBottom();
-            }
-        }
-    },
-
-    handleWheelScroll(e) {
-        const now = Date.now();
-        if (now - state.lastScrollTime < 16) {
-            e.preventDefault();
-            return;
-        }
-        state.lastScrollTime = now;
-
-        const scrollAmount = e.deltaY * 1.5;
-
-        if (!state.isScrolling) {
-            state.isScrolling = true;
-
-            window.requestAnimationFrame(() => {
-                elements.foldersContainer.scrollBy({
-                    top: scrollAmount,
-                    behavior: 'smooth'
-                });
-                state.isScrolling = false;
-            });
-
-            e.preventDefault();
-        }
-    }
 };
 
 // ==================== INITIALIZATION ====================
@@ -465,7 +478,7 @@ function initializeTerminal() {
         elements.suggestionsBox.addEventListener('click', eventHandlers.handleSuggestionClick);
     }
 
-    document.addEventListener('click', function(e) {
+    document.addEventListener('click', function (e) {
         if (!e.target.closest('.command-input, .suggestions-box')) {
             suggestionsManager.hideSuggestions();
         }
@@ -503,14 +516,14 @@ function initializeTooltips() {
 
     const buttons = document.querySelectorAll('.drive, .folders button');
     buttons.forEach(button => {
-        button.addEventListener('mousemove', function(e) {
+        button.addEventListener('mousemove', function (e) {
             tooltip.textContent = this.textContent.trim();
             tooltip.style.display = 'block';
             tooltip.style.left = (e.pageX + 15) + 'px';
             tooltip.style.top = (e.pageY + 15) + 'px';
         });
 
-        button.addEventListener('mouseout', function() {
+        button.addEventListener('mouseout', function () {
             tooltip.style.display = 'none';
         });
     });
@@ -525,10 +538,10 @@ function clearConsole() {
     $.ajax({
         url: CONFIG.endpoints.clearHistory,
         type: 'POST',
-        success: function(response) {
+        success: function (response) {
             console.log("Server history cleared:", response);
         },
-        error: function(xhr, status, error) {
+        error: function (xhr, status, error) {
             console.error("Error clearing server history:", status, error);
             $terminalOutput.append('<div class="command-output command-error">خطا در پاک کردن تاریخچه سرور</div>');
             utils.scrollToBottom();
@@ -570,12 +583,12 @@ function convert() {
 }
 
 // ==================== DOCUMENT READY ====================
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     initializeTerminal();
 });
 
 // jQuery ready for legacy code
-$(document).ready(function() {
+$(document).ready(function () {
     // Clear console button
     $('#clear-console').on('click', clearConsole);
 });
